@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04 as base
 
 WORKDIR /data
 
@@ -12,10 +12,9 @@ RUN apt-get update && \
     ./configure && \
     make && \
     make check && \
-    make install && \
-    cd /data && \
-    rm -rf par2cmdline && \
-    apt-get remove -y git build-essential automake && \
-    apt-get autoremove -y && \
-    apt-get purge
+    make install 
 
+
+FROM ubuntu:18.04 as app
+RUN apt-get update && apt-get install libgomp1 --no-install-recommends -y && rm -rf /var/lib/apt/lists/*
+COPY --from=base /usr/local/bin/par* /usr/local/bin/
