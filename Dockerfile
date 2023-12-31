@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 as base
+FROM ubuntu:22.04 as base
 
 WORKDIR /data
 
@@ -15,6 +15,6 @@ RUN apt-get update && \
     make install 
 
 
-FROM ubuntu:18.04 as app
+FROM ubuntu:22.04 as app
 RUN apt-get update && apt-get install libgomp1 --no-install-recommends -y && rm -rf /var/lib/apt/lists/*
 COPY --from=base /usr/local/bin/par* /usr/local/bin/
